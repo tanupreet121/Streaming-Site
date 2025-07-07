@@ -133,6 +133,73 @@ const TORRENTIO_ADDON = {
     transportUrl: 'https://torrentio.strem.fun/manifest.json'
 };
 
+const COMET_ADDON_MANIFEST = {
+    id: 'comet.elfhosted.com.xvvD',
+    description: 'Stremio\'s fastest torrent/debrid search add-on.',
+    version: '2.0.0',
+    catalogs: [],
+    resources: [
+        { name: 'stream', types: ['movie', 'series'], idPrefixes: ['tt', 'kitsu'] }
+    ],
+    types: ['movie', 'series', 'anime', 'other'],
+    logo: 'https://i.imgur.com/jmVoVMu.jpeg',
+    background: 'https://i.imgur.com/WwnXB3k.jpeg',
+    behaviorHints: { configurable: true, configurationRequired: false },
+    name: 'Comet | ElfHosted | TORRENT'
+};
+const COMET_ADDON = {
+    manifest: COMET_ADDON_MANIFEST,
+    transportUrl: 'https://comet.elfhosted.com/manifest.json'
+};
+
+const MEDIAFUSION_ADDON_MANIFEST = {
+    id: 'stremio.addons.mediafusion|elfhosted',
+    version: '4.3.33',
+    name: 'MediaFusion | ElfHosted',
+    contactEmail: 'mhdzumair@gmail.com',
+    description: 'Universal Stremio Add-on for Movies, Series, Live TV & Sports Events. Source: https://github.com/mhdzumair/MediaFusion',
+    logo: 'https://mediafusion.elfhosted.com/static/images/mediafusion-elfhosted-logo.png',
+    behaviorHints: { configurable: true, configurationRequired: false },
+    resources: [
+        { name: 'stream', types: ['movie', 'series', 'tv', 'events'], idPrefixes: ['tt', 'mf', 'dl'] },
+        { name: 'meta', types: ['movie', 'series', 'tv', 'events'], idPrefixes: ['mf', 'dl'] }
+    ],
+    types: ['movie', 'series', 'tv', 'events'],
+    catalogs: []
+};
+const MEDIAFUSION_ADDON = {
+    manifest: MEDIAFUSION_ADDON_MANIFEST,
+    transportUrl: 'https://mediafusion.elfhosted.com/manifest.json'
+};
+
+const STREAMING_CATALOGS_ADDON_MANIFEST = {
+    id: 'pw.ers.netflix-catalog',
+    logo: 'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
+    version: '1.0.9',
+    name: 'Streaming Catalogs',
+    description: 'Trending movies and series on Netflix, HBO Max, Disney+, Apple TV+ and more. Configure to choose your favourite services.',
+    catalogs: [
+        { id: 'nfx', type: 'movie', name: 'Netflix' },
+        { id: 'nfx', type: 'series', name: 'Netflix' },
+        { id: 'hbm', type: 'movie', name: 'HBO Max' },
+        { id: 'hbm', type: 'series', name: 'HBO Max' },
+        { id: 'dnp', type: 'movie', name: 'Disney+' },
+        { id: 'dnp', type: 'series', name: 'Disney+' },
+        { id: 'amp', type: 'movie', name: 'Prime  Video' },
+        { id: 'amp', type: 'series', name: 'Prime Video' },
+        { id: 'atp', type: 'movie', name: 'Apple TV+' },
+        { id: 'atp', type: 'series', name: 'Apple TV+' }
+    ],
+    resources: ['catalog'],
+    types: ['movie', 'series'],
+    idPrefixes: ['tt'],
+    behaviorHints: { configurable: true }
+};
+const STREAMING_CATALOGS_ADDON = {
+    manifest: STREAMING_CATALOGS_ADDON_MANIFEST,
+    transportUrl: 'https://catalogpw.ers.netflix-catalog.elfhosted.com/manifest.json'
+};
+
 module.exports = {
     CHROMECAST_RECEIVER_APP_ID,
     DEFAULT_STREAMING_SERVER_URL,
@@ -157,4 +224,10 @@ module.exports = {
     PROTOCOL,
     TORRENTIO_ADDON_MANIFEST,
     TORRENTIO_ADDON,
+    COMET_ADDON_MANIFEST,
+    COMET_ADDON,
+    MEDIAFUSION_ADDON_MANIFEST,
+    MEDIAFUSION_ADDON,
+    STREAMING_CATALOGS_ADDON_MANIFEST,
+    STREAMING_CATALOGS_ADDON,
 };

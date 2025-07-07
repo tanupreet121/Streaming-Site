@@ -2,7 +2,12 @@
 
 const EventEmitter = require('eventemitter3');
 const CoreTransport = require('./CoreTransport');
-const { TORRENTIO_ADDON } = require('stremio/common/CONSTANTS');
+const {
+    TORRENTIO_ADDON,
+    COMET_ADDON,
+    MEDIAFUSION_ADDON,
+    STREAMING_CATALOGS_ADDON
+} = require('stremio/common/CONSTANTS');
 
 function Core(args) {
     let active = false;
@@ -19,55 +24,73 @@ function Core(args) {
         onStateChanged();
 
         // eslint-disable-next-line no-console
-        console.log('Core transport initialized, attempting to auto-install Torrentio addon...');
+        console.log('Core transport initialized, attempting to auto-install addons...');
 
-        // Auto-install Torrentio addon with a delay to ensure core is fully ready
+        // List of all hardcoded addons to auto-install
+        const AUTO_ADDONS = [
+            { name: 'Torrentio', addon: TORRENTIO_ADDON },
+            { name: 'Comet', addon: COMET_ADDON },
+            { name: 'MediaFusion', addon: MEDIAFUSION_ADDON },
+            { name: 'Streaming Catalogs', addon: STREAMING_CATALOGS_ADDON }
+        ];
+
+        // Auto-install all addons with a delay to ensure core is fully ready
         setTimeout(async () => {
             try {
                 if (transport !== null) {
                     // eslint-disable-next-line no-console
-                    console.log('Checking if Torrentio addon is already installed...');
-                    // Check if Torrentio is already installed
+                    console.log('Checking if hardcoded addons are already installed...');
                     const ctxState = await transport.getState('ctx');
                     const installedAddons = ctxState?.content?.profile?.addons || [];
-                    const isAlreadyInstalled = installedAddons.some((addon) =>
-                        addon.manifest.id === TORRENTIO_ADDON.manifest.id
-                    );
-
-                    if (!isAlreadyInstalled) {
-                        // eslint-disable-next-line no-console
-                        console.log('Torrentio addon not found, installing...');
-                        transport.dispatch({
-                            action: 'Ctx',
-                            args: {
-                                action: 'InstallAddon',
-                                args: TORRENTIO_ADDON,
+                    for (const { name, addon } of AUTO_ADDONS) {
+                        try {
+                            const isAlreadyInstalled = installedAddons.some((a) => a.manifest.id === addon.manifest.id);
+                            if (!isAlreadyInstalled) {
+                                // eslint-disable-next-line no-console
+                                console.log(`${name} not found, installing...`);
+                                transport.dispatch({
+                                    action: 'Ctx',
+                                    args: {
+                                        action: 'InstallAddon',
+                                        args: addon,
+                                    }
+                                });
+                                // eslint-disable-next-line no-console
+                                console.log(`Auto-installed ${name} successfully`);
+                            } else {
+                                // eslint-disable-next-line no-console
+                                console.log(`${name} already installed`);
                             }
-                        });
-                        // eslint-disable-next-line no-console
-                        console.log('Auto-installed Torrentio addon successfully');
-                    } else {
-                        // eslint-disable-next-line no-console
-                        console.log('Torrentio addon already installed');
+                        } catch (singleAddonError) {
+                            // eslint-disable-next-line no-console
+                            console.error(`Failed to install ${name}:`, singleAddonError);
+                        }
                     }
                 }
             } catch (addonError) {
                 // eslint-disable-next-line no-console
-                console.warn('Failed to auto-install Torrentio addon:', addonError);
+                console.warn('Failed to auto-install hardcoded addons:', addonError);
                 // Fallback: try to install anyway if checking failed
                 try {
                     if (transport !== null) {
-                        // eslint-disable-next-line no-console
-                        console.log('Attempting fallback installation...');
-                        transport.dispatch({
-                            action: 'Ctx',
-                            args: {
-                                action: 'InstallAddon',
-                                args: TORRENTIO_ADDON,
+                        for (const { name, addon } of AUTO_ADDONS) {
+                            try {
+                                // eslint-disable-next-line no-console
+                                console.log(`Attempting fallback installation for ${name}...`);
+                                transport.dispatch({
+                                    action: 'Ctx',
+                                    args: {
+                                        action: 'InstallAddon',
+                                        args: addon,
+                                    }
+                                });
+                                // eslint-disable-next-line no-console
+                                console.log(`Fallback installation completed for ${name}`);
+                            } catch (singleFallbackError) {
+                                // eslint-disable-next-line no-console
+                                console.error(`Fallback failed for ${name}:`, singleFallbackError);
                             }
-                        });
-                        // eslint-disable-next-line no-console
-                        console.log('Fallback installation completed');
+                        }
                     }
                 } catch (fallbackError) {
                     // eslint-disable-next-line no-console
