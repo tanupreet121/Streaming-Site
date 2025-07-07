@@ -716,6 +716,7 @@ const Player = ({ urlParams, queryParams }) => {
                 className={styles['layer']}
                 onClick={onVideoClick}
                 onDoubleClick={onVideoDoubleClick}
+                videoState={video.state}
             />
             {
                 !video.state.loaded ?
