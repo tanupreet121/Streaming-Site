@@ -81,9 +81,6 @@ function Core(args) {
                                 });
                                 // eslint-disable-next-line no-console
                                 console.log(`Auto-installed ${name} successfully`);
-                            } else {
-                                // eslint-disable-next-line no-console
-                                console.log(`${name} already installed`);
                             }
                         } catch (singleAddonError) {
                             // eslint-disable-next-line no-console
