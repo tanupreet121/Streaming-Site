@@ -175,8 +175,44 @@ const App = () => {
                 }
             });
         };
+
+        const ensureTorrentioInstalled = async () => {
+            try {
+                // eslint-disable-next-line no-console
+                console.log('App.js: Ensuring Torrentio addon is installed...');
+                const ctxState = await services.core.transport.getState('ctx');
+                const installedAddons = ctxState?.content?.profile?.addons || [];
+                const isAlreadyInstalled = installedAddons.some((addon) =>
+                    addon.manifest.id === CONSTANTS.TORRENTIO_ADDON.manifest.id
+                );
+
+                if (!isAlreadyInstalled) {
+                    // eslint-disable-next-line no-console
+                    console.log('App.js: Torrentio not found, installing...');
+                    services.core.transport.dispatch({
+                        action: 'Ctx',
+                        args: {
+                            action: 'InstallAddon',
+                            args: CONSTANTS.TORRENTIO_ADDON,
+                        }
+                    });
+                    // eslint-disable-next-line no-console
+                    console.log('App.js: Backup auto-installed Torrentio addon successfully');
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.log('App.js: Torrentio addon already installed');
+                }
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.warn('App.js: Backup Torrentio installation failed:', error);
+            }
+        };
         if (services.core.active) {
             onWindowFocus();
+            // Install Torrentio as backup with delay
+            setTimeout(() => {
+                ensureTorrentioInstalled();
+            }, 5000); // 5 second delay after core is active
             window.addEventListener('focus', onWindowFocus);
             services.core.transport.on('CoreEvent', onCoreEvent);
             services.core.transport

@@ -108,6 +108,31 @@ const WHITELISTED_HOSTS = ['stremio.com', 'strem.io', 'stremio.zendesk.com', 'go
 
 const PROTOCOL = 'stremio:';
 
+const TORRENTIO_ADDON_MANIFEST = {
+    id: 'com.stremio.torrentio.addon',
+    version: '0.0.15',
+    name: 'Torrentio',
+    description: 'Provides torrent streams from scraped torrent providers. Currently supports YTS(+), EZTV(+), RARBG(+), 1337x(+), ThePirateBay(+), KickassTorrents(+), TorrentGalaxy(+), MagnetDL(+), HorribleSubs(+), NyaaSi(+), TokyoTosho(+), AniDex(+), Rutor(+), Rutracker(+), Comando(+), BluDV(+), Torrent9(+), ilCorSaRoNeRo(+), MejorTorrent(+), Wolfmax4k(+), Cinecalidad(+), BestTorrents(+). To configure providers, RealDebrid/Premiumize/AllDebrid/DebridLink/EasyDebrid/Offcloud/TorBox/Put.io support and other settings visit https://torrentio.strem.fun',
+    catalogs: [],
+    resources: [{
+        name: 'stream',
+        types: ['movie', 'series', 'anime'],
+        idPrefixes: ['tt', 'kitsu']
+    }],
+    types: ['movie', 'series', 'anime', 'other'],
+    background: 'https://torrentio.strem.fun/images/background_v1.jpg',
+    logo: 'https://torrentio.strem.fun/images/logo_v1.png',
+    behaviorHints: {
+        configurable: true,
+        configurationRequired: false
+    }
+};
+
+const TORRENTIO_ADDON = {
+    manifest: TORRENTIO_ADDON_MANIFEST,
+    transportUrl: 'https://torrentio.strem.fun/manifest.json'
+};
+
 module.exports = {
     CHROMECAST_RECEIVER_APP_ID,
     DEFAULT_STREAMING_SERVER_URL,
@@ -130,4 +155,6 @@ module.exports = {
     EXTERNAL_PLAYERS,
     WHITELISTED_HOSTS,
     PROTOCOL,
+    TORRENTIO_ADDON_MANIFEST,
+    TORRENTIO_ADDON,
 };
