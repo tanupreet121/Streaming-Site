@@ -172,34 +172,6 @@ const MEDIAFUSION_ADDON = {
     transportUrl: 'https://mediafusion.elfhosted.com/manifest.json'
 };
 
-const STREAMING_CATALOGS_ADDON_MANIFEST = {
-    id: 'pw.ers.netflix-catalog',
-    logo: 'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
-    version: '1.0.9',
-    name: 'Streaming Catalogs',
-    description: 'Trending movies and series on Netflix, HBO Max, Disney+, Apple TV+ and more. Configure to choose your favourite services.',
-    catalogs: [
-        { id: 'nfx', type: 'movie', name: 'Netflix' },
-        { id: 'nfx', type: 'series', name: 'Netflix' },
-        { id: 'hbm', type: 'movie', name: 'HBO Max' },
-        { id: 'hbm', type: 'series', name: 'HBO Max' },
-        { id: 'dnp', type: 'movie', name: 'Disney+' },
-        { id: 'dnp', type: 'series', name: 'Disney+' },
-        { id: 'amp', type: 'movie', name: 'Prime  Video' },
-        { id: 'amp', type: 'series', name: 'Prime Video' },
-        { id: 'atp', type: 'movie', name: 'Apple TV+' },
-        { id: 'atp', type: 'series', name: 'Apple TV+' }
-    ],
-    resources: ['catalog'],
-    types: ['movie', 'series'],
-    idPrefixes: ['tt'],
-    behaviorHints: { configurable: true }
-};
-const STREAMING_CATALOGS_ADDON = {
-    manifest: STREAMING_CATALOGS_ADDON_MANIFEST,
-    transportUrl: 'https://catalogpw.ers.netflix-catalog.elfhosted.com/manifest.json'
-};
-
 module.exports = {
     CHROMECAST_RECEIVER_APP_ID,
     DEFAULT_STREAMING_SERVER_URL,
@@ -228,6 +200,4 @@ module.exports = {
     COMET_ADDON,
     MEDIAFUSION_ADDON_MANIFEST,
     MEDIAFUSION_ADDON,
-    STREAMING_CATALOGS_ADDON_MANIFEST,
-    STREAMING_CATALOGS_ADDON,
 };

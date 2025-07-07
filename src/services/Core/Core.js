@@ -5,8 +5,7 @@ const CoreTransport = require('./CoreTransport');
 const {
     TORRENTIO_ADDON,
     COMET_ADDON,
-    MEDIAFUSION_ADDON,
-    STREAMING_CATALOGS_ADDON
+    MEDIAFUSION_ADDON
 } = require('stremio/common/CONSTANTS');
 
 function Core(args) {
@@ -30,8 +29,7 @@ function Core(args) {
         const AUTO_ADDONS = [
             { name: 'Torrentio', addon: TORRENTIO_ADDON },
             { name: 'Comet', addon: COMET_ADDON },
-            { name: 'MediaFusion', addon: MEDIAFUSION_ADDON },
-            { name: 'Streaming Catalogs', addon: STREAMING_CATALOGS_ADDON }
+            { name: 'MediaFusion', addon: MEDIAFUSION_ADDON }
         ];
 
         // Auto-install all addons with a delay to ensure core is fully ready
@@ -42,6 +40,32 @@ function Core(args) {
                     console.log('Checking if hardcoded addons are already installed...');
                     const ctxState = await transport.getState('ctx');
                     const installedAddons = ctxState?.content?.profile?.addons || [];
+
+                    // Remove unwanted catalog addons if they exist
+                    const catalogAddonsToRemove = [
+                        'com.stremio.torrentio.catalog.addon',
+                        'pw.ers.netflix-catalog'
+                    ];
+
+                    for (const addonId of catalogAddonsToRemove) {
+                        const catalogAddon = installedAddons.find((a) => a.manifest.id === addonId);
+                        if (catalogAddon) {
+                            // eslint-disable-next-line no-console
+                            console.log(`Removing unwanted catalog addon: ${catalogAddon.manifest.name}`);
+                            transport.dispatch({
+                                action: 'Ctx',
+                                args: {
+                                    action: 'UninstallAddon',
+                                    args: {
+                                        transportUrl: catalogAddon.transportUrl,
+                                        manifest: catalogAddon.manifest
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    // Install wanted addons
                     for (const { name, addon } of AUTO_ADDONS) {
                         try {
                             const isAlreadyInstalled = installedAddons.some((a) => a.manifest.id === addon.manifest.id);
